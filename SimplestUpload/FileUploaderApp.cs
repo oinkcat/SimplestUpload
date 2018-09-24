@@ -62,13 +62,13 @@ namespace SimplestUpload
             Response.End();
         }
 
-        // Запрошен начальный URL
+        // Index page requested
         private void HandleIndexPage()
         {
             HandleStaticFile(IndexFileName);
         }
 
-        // Запрошен статический файл
+        // Static file requested
         private void HandleStaticFile(string fileName)
         {
             string localPath = httpContext.Server.MapPath(fileName);
