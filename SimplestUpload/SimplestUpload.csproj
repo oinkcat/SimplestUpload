@@ -66,8 +66,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="index.html" />
+    <Content Include="www\index.html" />
     <Content Include="Web.config" />
+    <Content Include="www\style.css" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileUploaderApp.cs" />
@@ -76,6 +77,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

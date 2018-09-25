@@ -11,12 +11,18 @@ namespace SimplestUpload
     /// </summary>
     public class FileUploaderApp : IHttpHandler
     {
+        // Status codes
         private const int StatusOK = 200;
         private const int StatusBadRequest = 400;
         private const int StatusNotFound = 404;
 
+        // Main page file name
         private const string IndexFileName = "index.html";
 
+        // Directory containing static files
+        private const string StaticFilesDirectory = "www";
+
+        // Context of current request
         private HttpContext httpContext;
 
         // Current request
@@ -55,6 +61,7 @@ namespace SimplestUpload
             }
             else
             {
+                // Error 400
                 Response.StatusCode = StatusBadRequest;
                 Response.Write("Bad request!");
             }
@@ -71,7 +78,9 @@ namespace SimplestUpload
         // Static file requested
         private void HandleStaticFile(string fileName)
         {
-            string localPath = httpContext.Server.MapPath(fileName);
+            // Translate path
+            string vPath = String.Concat(StaticFilesDirectory, "/", fileName);
+            string localPath = httpContext.Server.MapPath(vPath);
 
             if(File.Exists(localPath))
             {
@@ -80,6 +89,7 @@ namespace SimplestUpload
             }
             else
             {
+                // Error 404
                 Response.StatusCode = StatusNotFound;
                 Response.Write(String.Format("File {0} not found!", fileName));
             }
