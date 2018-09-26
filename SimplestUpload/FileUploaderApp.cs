@@ -20,10 +20,16 @@ namespace SimplestUpload
         private const string IndexFileName = "index.html";
 
         // Directory containing static files
-        private const string StaticFilesDirectory = "www";
+        private const string StaticFilesDirectory = "~/www";
+
+        // Directory containing uploaded files
+        private const string UploadDirectory = "~/Uploads";
 
         // Context of current request
         private HttpContext httpContext;
+
+        // File storage
+        private FileStorage storage;
 
         // Current request
         private HttpRequest Request
@@ -53,11 +59,18 @@ namespace SimplestUpload
         {
             httpContext = context;
 
-            string requestUrl = context.Request.Url.LocalPath;
+            string requestUrl = Request.Url.LocalPath;
+            bool isPost = Request.HttpMethod == "POST";
 
-            if (requestUrl == "/")
+            if (!isPost && requestUrl == "/")
             {
+                // Home page
                 HandleIndexPage();
+            }
+            else if(!isPost && requestUrl.IndexOf('.') > 0)
+            {
+                // Static file
+                HandleStaticFile(requestUrl);
             }
             else
             {
@@ -84,6 +97,7 @@ namespace SimplestUpload
 
             if(File.Exists(localPath))
             {
+                Response.ContentType = MimeMapping.GetMimeMapping(localPath);
                 Response.StatusCode = StatusOK;
                 Response.WriteFile(localPath);
             }
@@ -93,6 +107,11 @@ namespace SimplestUpload
                 Response.StatusCode = StatusNotFound;
                 Response.Write(String.Format("File {0} not found!", fileName));
             }
+        }
+
+        public FileUploaderApp()
+        {
+            storage = new FileStorage(UploadDirectory);
         }
     }
 }

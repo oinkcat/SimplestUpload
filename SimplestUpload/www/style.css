@@ -1,3 +1,78 @@
 ﻿body {
     margin: 0px;
+    font-family: Tahoma;
+    font-size: 11pt;
+}
+
+header, section, footer {
+    min-width: 480px;
+}
+
+img {
+    border: none;
+}
+
+.right {
+    float: right;
+}
+
+.clear {
+    clear: both;
+}
+
+header {
+    color: white;
+    background-color: #2bbb45;
+    line-height: 48px;
+    height: 48px;
+    padding: 0px 8px;
+}
+
+header > .title {
+    font-size: 16pt;
+}
+
+header a,
+header a:visited {
+    color: white;
+    text-decoration: none;
+}
+
+header a:hover {
+    text-decoration: underline;
+}
+
+#main {
+    position: absolute;
+    top: 48px;
+    left: 0px;
+    right: 0px;
+    bottom: 26px;
+    overflow-y: scroll;
+}
+
+#fileList {
+    list-style: none;
+    margin: 0px;
+    padding-left: 0px;
+}
+
+#fileList li {
+    margin-left: 0px;
+    padding: 16px;
+}
+
+#fileList li:hover {
+    background-color: #eeeeee;
+}
+
+footer {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    height: 26px;
+    line-height: 26px;
+    padding: 0px 4px;
+    background-color: #bbbbbb;
 }
