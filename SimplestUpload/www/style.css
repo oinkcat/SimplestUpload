@@ -20,6 +20,10 @@ img {
     clear: both;
 }
 
+.hidden {
+    display: none;
+}
+
 header {
     color: white;
     background-color: #2bbb45;
@@ -60,6 +64,15 @@ header a:hover {
 #fileList li {
     margin-left: 0px;
     padding: 16px;
+}
+
+#fileList li > a {
+    color: #444444;
+    text-decoration: none;
+}
+
+#fileList li > a:hover {
+    text-decoration: underline;
 }
 
 #fileList li:hover {

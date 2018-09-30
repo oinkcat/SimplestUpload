@@ -19,7 +19,50 @@ namespace SimplestUpload
         /// <returns>All uploaded files</returns>
         public IList<UploadedFile> GetFiles()
         {
-            return new List<UploadedFile>();
+            var allFiles = new DirectoryInfo(dirPath).EnumerateFiles()
+                .Select(fi => UploadedFile.FromFileInfo(fi))
+                .OrderBy(f => f.Name)
+                .ToList();
+
+            return allFiles;
+        }
+
+        /// <summary>
+        /// Get uploaded file by it's id
+        /// </summary>
+        /// <param name="fileId">File id</param>
+        public UploadedFile GetFileById(uint fileId)
+        {
+            return GetFiles().SingleOrDefault(f => f.Id == fileId);
+        }
+
+        /// <summary>
+        /// Get file contents
+        /// </summary>
+        /// <param name="fileInfo">Uploaded file info</param>
+        /// <returns>File contents stream</returns>
+        public Stream GetFileStream(UploadedFile fileInfo)
+        {
+            string fullName = Path.Combine(dirPath, fileInfo.Name);
+            return File.OpenRead(fullName);
+        }
+
+        /// <summary>
+        /// Save uploaded file into upload directory
+        /// </summary>
+        /// <param name="fileName">Uploaded file name</param>
+        /// <param name="contents">File contents stream</param>
+        public void UploadNewFile(string fileName, Stream contents)
+        {
+            string localFileName = Path.Combine(dirPath, fileName);
+
+            using(var outputStream = new FileStream(localFileName, FileMode.Create))
+            {
+                var uploadedFileBytes = new byte[contents.Length];
+                contents.Read(uploadedFileBytes, 0, uploadedFileBytes.Length);
+
+                outputStream.Write(uploadedFileBytes, 0, uploadedFileBytes.Length);
+            }
         }
 
         public FileStorage(string path)

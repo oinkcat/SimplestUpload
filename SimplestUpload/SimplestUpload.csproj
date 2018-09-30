@@ -39,8 +39,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
-    <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
@@ -69,6 +69,7 @@
     <Content Include="www\index.html" />
     <Content Include="Web.config" />
     <Content Include="www\style.css" />
+    <Content Include="www\uploader.js" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileStorage.cs" />

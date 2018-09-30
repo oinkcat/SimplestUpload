@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.IO;
+using System.Web;
+using System.Runtime.Serialization.Json;
 
 namespace SimplestUpload
 {
@@ -27,9 +28,6 @@ namespace SimplestUpload
 
         // Context of current request
         private HttpContext httpContext;
-
-        // File storage
-        private FileStorage storage;
 
         // Current request
         private HttpRequest Request
@@ -72,6 +70,22 @@ namespace SimplestUpload
                 // Static file
                 HandleStaticFile(requestUrl);
             }
+            else if(!isPost && requestUrl.StartsWith("/download/"))
+            {
+                // Requested file for download
+                var fileId = uint.Parse(requestUrl.Split('/')[2]);
+                HandleFileDownload(fileId);
+            }
+            else if(isPost && requestUrl == "/list")
+            {
+                // List uploaded files
+                HandleFileList();
+            }
+            else if(isPost && requestUrl == "/upload")
+            {
+                // Upload new file
+                HandleFileUpload();
+            }
             else
             {
                 // Error 400
@@ -86,6 +100,55 @@ namespace SimplestUpload
         private void HandleIndexPage()
         {
             HandleStaticFile(IndexFileName);
+        }
+
+        // File list requested
+        private void HandleFileList()
+        {
+            var uploadedFiles = GetStorage().GetFiles();
+            var serializer = new DataContractJsonSerializer(uploadedFiles.GetType());
+            serializer.WriteObject(Response.OutputStream, uploadedFiles);
+
+            Response.StatusCode = StatusOK;
+            Response.ContentType = "applicaion/json";
+        }
+
+        // Requested file for download
+        private void HandleFileDownload(uint fileId)
+        {
+            var storage = GetStorage();
+            var fileInfo = storage.GetFileById(fileId);
+
+            if (fileInfo != null)
+            {
+                using (var stream = storage.GetFileStream(fileInfo))
+                {
+                    Response.StatusCode = 200;
+                    Response.ContentType = "application/octet-stream";
+
+                    var fileBuffer = new byte[stream.Length];
+                    stream.Read(fileBuffer, 0, fileBuffer.Length);
+                    Response.BinaryWrite(fileBuffer);
+                }
+            }
+            else
+            {
+                Response.StatusCode = 404;
+            }
+        }
+
+        // Got uploaded file
+        private void HandleFileUpload()
+        {
+            var uploadedFile = Request.Files[0];
+
+            var storage = GetStorage();
+            string fileName = Path.GetFileName(uploadedFile.FileName);
+            storage.UploadNewFile(fileName, uploadedFile.InputStream);
+
+            Response.StatusCode = StatusOK;
+            Response.ContentType = "text/plain";
+            Response.Write("OK");
         }
 
         // Static file requested
@@ -109,9 +172,10 @@ namespace SimplestUpload
             }
         }
 
-        public FileUploaderApp()
+        // Get uploaded files storage instance
+        private FileStorage GetStorage()
         {
-            storage = new FileStorage(UploadDirectory);
+            return new FileStorage(httpContext.Server.MapPath(UploadDirectory));
         }
     }
 }
