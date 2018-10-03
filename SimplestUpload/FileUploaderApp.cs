@@ -124,7 +124,14 @@ namespace SimplestUpload
                 using (var stream = storage.GetFileStream(fileInfo))
                 {
                     Response.StatusCode = 200;
-                    Response.ContentType = "application/octet-stream";
+                    Response.ContentType = "application/download";
+                    
+                    // Escape non-ASCII characters in file name
+                    string escapedFileName = Uri.EscapeUriString(fileInfo.Name);
+                    string headerValue = String.Format("attachment; filename=\"{0}\"",
+                                                       escapedFileName);
+                    // Will be shown "Save as.." dialog
+                    Response.AddHeader("Content-Disposition", headerValue);
 
                     var fileBuffer = new byte[stream.Length];
                     stream.Read(fileBuffer, 0, fileBuffer.Length);

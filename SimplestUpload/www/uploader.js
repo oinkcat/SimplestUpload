@@ -38,6 +38,21 @@
         }
     }
 
+    // Get human-readable size of file
+    function getReadableFileSize(sizeInBytes) {
+        var units = ['B', 'KB', 'MB', 'GB'];
+
+        var size = sizeInBytes;
+        var unitIdx = 0;
+
+        while (size > 1024) {
+            size = Math.floor(size / 1024);
+            unitIdx++;
+        }
+
+        return size + ' ' + units[unitIdx];
+    }
+
     // Show list of uploaded files
     function showFileList(files) {
         var listFragment = d.createDocumentFragment();
@@ -50,6 +65,12 @@
             fileLink.href = DOWNLOAD_URL + '/' + fileInfo.id;
             fileLink.textContent = fileInfo.name;
             listItem.appendChild(fileLink);
+            var sizeElem = d.createElement('span');
+            sizeElem.textContent = getReadableFileSize(fileInfo.size);
+            var sizeContainer = d.createElement('div');
+            sizeContainer.className = 'size-container right';
+            sizeContainer.appendChild(sizeElem);
+            listItem.appendChild(sizeContainer);
             listFragment.appendChild(listItem);
         }
 

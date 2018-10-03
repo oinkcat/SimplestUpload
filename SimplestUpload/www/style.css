@@ -1,4 +1,5 @@
-﻿body {
+﻿/* Common elements */
+body {
     margin: 0px;
     font-family: Tahoma;
     font-size: 11pt;
@@ -24,6 +25,7 @@ img {
     display: none;
 }
 
+/* Page header */
 header {
     color: white;
     background-color: #2bbb45;
@@ -46,6 +48,7 @@ header a:hover {
     text-decoration: underline;
 }
 
+/* File list section */
 #main {
     position: absolute;
     top: 48px;
@@ -64,10 +67,12 @@ header a:hover {
 #fileList li {
     margin-left: 0px;
     padding: 16px;
+    border-bottom: solid 1px #eeeeee;
 }
 
 #fileList li > a {
     color: #444444;
+    font-size: larger;
     text-decoration: none;
 }
 
@@ -79,6 +84,13 @@ header a:hover {
     background-color: #eeeeee;
 }
 
+#fileList li > .size-container {
+    width: 60px;
+    text-align: left;
+    color: #666666;
+}
+
+/* Page footer */
 footer {
     position: absolute;
     left: 0px;
