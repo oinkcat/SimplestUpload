@@ -8,10 +8,17 @@
 <body>
     <header>
         <span class="title">File uploader</span>
-        <div class="right upload-link">
+        <div id="uploadButton" class="right upload-link">
             <a href="javascript:void(0)">
                 <strong>+</strong> Upload file
             </a>
+        </div>
+
+        <div id="uploadIndicator" class="right hidden">
+            Uploading...
+            <div class="bar-outline">
+                <div id="bar" class="bar-fill"></div>
+            </div>
         </div>
 
         <input type="file" id="uploadSource" class="hidden" />

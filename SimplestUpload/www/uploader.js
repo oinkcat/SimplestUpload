@@ -5,7 +5,11 @@
     var UPLOAD_URL = '/upload';
     var DOWNLOAD_URL = '/download';
 
+    // DOM elements
     var fileSource = null;
+    var uploadLinkBlock = null;
+    var uploadProgressBlock = null;
+    var uploadBar = null;
 
     // Prompt user to select file to upload
     function promptForFile() {
@@ -24,10 +28,26 @@
         var formData = new FormData();
         formData.append('file', selectedFile);
         uploader.send(formData);
+
+        toggleUploadState(true);
+    }
+
+    // Toggle UI elements visibility
+    function toggleUploadState(uploading) {
+        if (uploading) {
+            uploadLinkBlock.classList.add('hidden');
+            uploadProgressBlock.classList.remove('hidden');
+            uploadBar.style.width = '0%';
+        } else {
+            uploadLinkBlock.classList.remove('hidden');
+            uploadProgressBlock.classList.add('hidden');
+        }
     }
 
     function uploadProgress(e) {
         console.log('Progress: ' + e.loaded + '/' + e.total);
+        var percent = Math.round(e.loaded / e.total * 100);
+        uploadBar.style.width = percent + '%';
     }
 
     function readyStateChanged(e) {
@@ -35,6 +55,7 @@
 
         if (xhr.readyState == xhr.DONE) {
             fetchFileList();
+            toggleUploadState(false);
         }
     }
 
@@ -98,6 +119,11 @@
 
     // Initialize client uploader features
     function initialize() {
+        // Blocks and upload bar
+        uploadLinkBlock = d.getElementById('uploadButton');
+        uploadProgressBlock = d.getElementById('uploadIndicator');
+        uploadBar = d.getElementById('bar');
+
         // Click to select a file
         var uploadLink = d.querySelector('.upload-link a');
         uploadLink.addEventListener('click', promptForFile);

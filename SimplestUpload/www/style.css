@@ -48,6 +48,23 @@ header a:hover {
     text-decoration: underline;
 }
 
+/* Upload progress indicator */
+#uploadIndicator {
+    text-align: center;
+    line-height: 28px;
+}
+
+#uploadIndicator .bar-outline {
+    width: 150px;
+    height: 8px;
+    border: 1px solid white;
+}
+
+#uploadIndicator .bar-fill {
+    background-color: white;
+    height: 8px;
+}
+
 /* File list section */
 #main {
     position: absolute;
