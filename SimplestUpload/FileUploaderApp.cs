@@ -86,6 +86,12 @@ namespace SimplestUpload
                 // Upload new file
                 HandleFileUpload();
             }
+            else if(isPost && requestUrl.StartsWith("/delete/"))
+            {
+                // Delete uploaded file
+                var fileId = uint.Parse(requestUrl.Split('/')[2]);
+                HandleFileDeleting(fileId);
+            }
             else
             {
                 // Error 400
@@ -142,6 +148,15 @@ namespace SimplestUpload
             {
                 Response.StatusCode = 404;
             }
+        }
+
+        // Delete uploaded file with given id
+        private void HandleFileDeleting(uint fileId)
+        {
+            var storage = GetStorage();
+            var fileToDelete = storage.GetFileById(fileId);
+
+            storage.DeleteFile(fileToDelete);
         }
 
         // Got uploaded file

@@ -4,6 +4,7 @@
     var FILELIST_URL = '/list';
     var UPLOAD_URL = '/upload';
     var DOWNLOAD_URL = '/download';
+    var DELETE_URL = '/delete/'
 
     // DOM elements
     var fileSource = null;
@@ -82,15 +83,28 @@
         for (var i in files) {
             var fileInfo = files[i];
             var listItem = d.createElement('li');
+            // Download link
             var fileLink = d.createElement('a');
             fileLink.href = DOWNLOAD_URL + '/' + fileInfo.id;
             fileLink.textContent = fileInfo.name;
             listItem.appendChild(fileLink);
+            // File size label
             var sizeElem = d.createElement('span');
             sizeElem.textContent = getReadableFileSize(fileInfo.size);
             var sizeContainer = d.createElement('div');
             sizeContainer.className = 'size-container right';
             sizeContainer.appendChild(sizeElem);
+            // Delete link
+            var delLink = d.createElement('a');
+            delLink.href = 'javascript:void(0)';
+            delLink.innerHTML = '&times;';
+            var deleteFunc = deleteFile.bind(this, fileInfo.id);
+            delLink.addEventListener('click', deleteFunc);
+            var delContainer = d.createElement('div');
+            delContainer.className = 'del-container right';
+            delContainer.appendChild(delLink);
+            // Append in reverse order
+            listItem.appendChild(delContainer);
             listItem.appendChild(sizeContainer);
             listFragment.appendChild(listItem);
         }
@@ -99,6 +113,20 @@
         var container = d.getElementById('fileList');
         container.innerHTML = '';
         container.appendChild(listFragment);
+    }
+
+    // Send delete request
+    function deleteFile(id) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', DELETE_URL + id);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == xhr.DONE) {
+                fetchFileList();
+            }
+        };
+
+        xhr.send();
     }
 
     // Fetch uploaded files list from server

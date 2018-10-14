@@ -107,6 +107,23 @@ header a:hover {
     color: #666666;
 }
 
+#fileList li > .del-container {
+    width: 20px;
+    text-align: center;
+}
+
+#fileList li > .del-container > a {
+    color: #ff6565;
+    text-decoration: none;
+    visibility: hidden;
+    font-size: larger;
+    font-weight: bold;
+}
+
+#fileList li:hover > .del-container > a {
+    visibility: visible;
+}
+
 /* Page footer */
 footer {
     position: absolute;

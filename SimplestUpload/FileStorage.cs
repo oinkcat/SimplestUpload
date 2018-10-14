@@ -65,6 +65,16 @@ namespace SimplestUpload
             }
         }
 
+        /// <summary>
+        /// Delete existing uploaded file
+        /// </summary>
+        /// <param name="file">File to be deleted</param>
+        public void DeleteFile(UploadedFile file)
+        {
+            string deletingFileName = Path.Combine(dirPath, file.Name);
+            File.Delete(deletingFileName);
+        }
+
         public FileStorage(string path)
         {
             dirPath = path;
